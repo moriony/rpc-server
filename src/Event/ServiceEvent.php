@@ -2,7 +2,7 @@
 
 namespace Moriony\RpcServer\Event;
 
-use RpcServer\Request\RpcRequestInterface;
+use Moriony\RpcServer\Request\RpcRequestInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class ServiceEvent extends Event
