@@ -12,7 +12,6 @@ class XmlRpcRequest implements RpcRequestInterface
     const MESSAGE_INVALID_CONTENT_TYPE = 'Content-Type should be application/xml.';
     const MESSAGE_INVALID_BODY = 'Invalid request body, should be valid xml.';
     const MESSAGE_METHOD_REQUIRED = 'Invalid request body, should include method.';
-    const MESSAGE_METHOD_PARAMS_REQUIRED = 'Invalid request body, should include params.';
     const MESSAGE_METHOD_PARAMS_TYPE = 'Invalid request body, params should be an array or object.';
 
     protected $httpRequest;
