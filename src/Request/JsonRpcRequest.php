@@ -21,7 +21,7 @@ class JsonRpcRequest implements RpcRequestInterface
     protected $data;
     protected $extraData;
 
-    public function __construct(Request $request, array $extraData = [])
+    public function __construct(Request $request, array $extraData = array())
     {
         $this->httpRequest = $request;
 
