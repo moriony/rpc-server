@@ -1,8 +1,6 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
-
-use Moriony\RpcServer\Exception\RpcException;
+namespace Moriony\RpcServer\Exception;
 
 class RpcExceptionTest extends \PHPUnit_Framework_TestCase
 {

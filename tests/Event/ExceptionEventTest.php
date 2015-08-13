@@ -1,8 +1,7 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
+namespace Moriony\RpcServer\Event;
 
-use Moriony\RpcServer\Event\ExceptionEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExceptionEventTest extends \PHPUnit_Framework_TestCase

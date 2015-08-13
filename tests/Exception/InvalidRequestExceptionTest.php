@@ -1,8 +1,6 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
-
-use Moriony\RpcServer\Exception\InvalidRequestException;
+namespace Moriony\RpcServer\Exception;
 
 class InvalidRequestExceptionTest extends \PHPUnit_Framework_TestCase
 {

@@ -11,12 +11,12 @@ use Moriony\RpcServer\Event\ResponseEvent;
 use Moriony\RpcServer\Event\ServiceEvent;
 use Moriony\RpcServer\Exception\InvalidMethodException;
 use Moriony\RpcServer\Request\RpcRequestInterface;
-use Moriony\RpcServer\Response\AbstractRpcResponse;
 use Moriony\RpcServer\ResponseSerializer\SerializerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractRpcServer
 {
@@ -49,7 +49,7 @@ abstract class AbstractRpcServer
 
     /**
      * @param Request $httpRequest
-     * @return AbstractRpcResponse
+     * @return Response
      */
     final public function handleRequest(Request $httpRequest)
     {

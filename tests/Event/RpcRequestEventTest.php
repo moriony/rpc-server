@@ -1,8 +1,7 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
+namespace Moriony\RpcServer\Event;
 
-use Moriony\RpcServer\Event\RpcRequestEvent;
 use Moriony\RpcServer\Request\RpcRequestInterface;
 
 class RpcRequestEventTest extends \PHPUnit_Framework_TestCase

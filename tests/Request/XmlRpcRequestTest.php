@@ -1,8 +1,7 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
+namespace Moriony\RpcServer\Request;
 
-use Moriony\RpcServer\Request\XmlRpcRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 class XmlRpcRequestTest extends \PHPUnit_Framework_TestCase

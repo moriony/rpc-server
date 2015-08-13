@@ -1,8 +1,7 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
+namespace Moriony\RpcServer\Request;
 
-use Moriony\RpcServer\Request\JsonRpcRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 class JsonRpcRequestTest extends \PHPUnit_Framework_TestCase

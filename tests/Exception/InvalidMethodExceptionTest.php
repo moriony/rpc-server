@@ -1,8 +1,6 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
-
-use Moriony\RpcServer\Exception\InvalidMethodException;
+namespace Moriony\RpcServer\Exception;
 
 class InvalidMethodExceptionTest extends \PHPUnit_Framework_TestCase
 {

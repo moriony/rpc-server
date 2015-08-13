@@ -1,8 +1,7 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
+namespace Moriony\RpcServer\Event;
 
-use Moriony\RpcServer\Event\MethodCallEvent;
 use Moriony\RpcServer\Request\RpcRequestInterface;
 
 class MethodCallEventTest extends \PHPUnit_Framework_TestCase

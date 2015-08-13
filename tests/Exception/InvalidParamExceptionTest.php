@@ -1,8 +1,6 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
-
-use Moriony\RpcServer\Exception\InvalidParamException;
+namespace Moriony\RpcServer\Exception;
 
 class InvalidParamExceptionTest extends \PHPUnit_Framework_TestCase
 {

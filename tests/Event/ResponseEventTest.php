@@ -1,8 +1,7 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
+namespace Moriony\RpcServer\Event;
 
-use Moriony\RpcServer\Event\ResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
 
 class ResponseEventTest extends \PHPUnit_Framework_TestCase

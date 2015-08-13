@@ -1,8 +1,7 @@
 <?php
 
-namespace Moriony\RpcServer\Math;
+namespace Moriony\RpcServer\Event;
 
-use Moriony\RpcServer\Event\HttpRequestEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 class HttpRequestEventTest extends \PHPUnit_Framework_TestCase
