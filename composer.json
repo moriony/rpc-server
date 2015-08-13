@@ -1,5 +1,6 @@
 {
     "name": "moriony/rpc-server",
+    "description": "JSON+XML RPC Server based on Symfony components.",
     "type": "library",
     "keywords": ["rpc", "xml", "json", "server", "symfony"],
     "license": "MIT",
@@ -11,12 +12,12 @@
     ],
     "require": {
         "php": ">=5.4",
-        "symfony/event-dispatcher": "2.7.*",
-        "symfony/http-foundation": "2.7.*",
-        "symfony/config": "2.7.*",
-        "symfony/dependency-injection": "2.7.*",
-        "pagerfanta/pagerfanta": "1.0.*",
-        "jms/serializer": "1.0.*"
+        "symfony/event-dispatcher": "~2.4",
+        "symfony/http-foundation": "~2.4",
+        "symfony/config": "~2.4",
+        "symfony/dependency-injection": "~2.4",
+        "pagerfanta/pagerfanta": "~1.0",
+        "jms/serializer": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.8.*",
