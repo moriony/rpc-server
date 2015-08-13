@@ -9,6 +9,7 @@ use Moriony\RpcServer\Event\MethodCallEvent;
 use Moriony\RpcServer\Event\ResponseEvent;
 use Moriony\RpcServer\Exception\InvalidMethodException;
 use Moriony\RpcServer\Handler\HandlerInterface;
+use Moriony\RpcServer\HandlerProvider\HandlerProviderInterface;
 use Moriony\RpcServer\Request\RpcRequestInterface;
 use Moriony\RpcServer\ResponseSerializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -75,6 +76,14 @@ abstract class AbstractRpcServer
     public function addHandler($name, HandlerInterface $handler)
     {
         $this->handlers[$name] = $handler;
+        return $this;
+    }
+
+    public function addHandlerProvider(HandlerProviderInterface $provider)
+    {
+        foreach ($provider->provide() as $name => $handler) {
+            $this->addHandler($name, $handler);
+        }
         return $this;
     }
 }

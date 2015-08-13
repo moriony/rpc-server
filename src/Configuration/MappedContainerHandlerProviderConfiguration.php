@@ -1,10 +1,10 @@
 <?php
-namespace Moriony\RpcServer;
+namespace Moriony\RpcServer\Configuration;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+class MappedContainerHandlerProviderConfiguration implements ConfigurationInterface
 {
     /**
      * {@inheritDoc}
@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('rpc_server');
         $rootNode
             ->children()
-                ->arrayNode('methods')
+                ->arrayNode('map')
                     ->useAttributeAsKey('alias')
                     ->prototype('array')
                         ->children()
@@ -28,9 +28,6 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                ->end()
-                ->arrayNode('extra_data')
-                    ->prototype('variable')->end()
                 ->end()
             ->end();
         return $treeBuilder;
