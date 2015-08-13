@@ -27,7 +27,7 @@ class MappedContainerHandlerProvider implements HandlerProviderInterface
     {
         $handlers = [];
         foreach ($this->config['map'] as $name => $map) {
-            $handlers[$name] = new ServiceContainerHandler($this->container, $map['service'], $map['name']);
+            $handlers[$name] = new ServiceContainerHandler($this->container, $map['service'], $map['method']);
         }
         return $handlers;
     }
