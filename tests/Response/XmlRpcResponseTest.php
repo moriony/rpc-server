@@ -14,5 +14,4 @@ class XmlRpcResponseTest extends \PHPUnit_Framework_TestCase
         $response = new XmlRpcResponse();
         $this->assertEquals('application/xml', $response->headers->get('Content-Type'));
     }
-
 }

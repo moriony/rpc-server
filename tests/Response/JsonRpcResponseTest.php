@@ -14,5 +14,4 @@ class JsonRpcResponseTest extends \PHPUnit_Framework_TestCase
         $response = new JsonRpcResponse();
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
     }
-
 }
