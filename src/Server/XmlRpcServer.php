@@ -14,7 +14,7 @@ class XmlRpcServer extends AbstractRpcServer implements RpcServerInterface
 
     protected function createRequest(Request $request)
     {
-        return new XmlRpcRequest($request, $this->config['extra_data']);
+        return new XmlRpcRequest($request);
     }
 
     protected function createResponse($data)
