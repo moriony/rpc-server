@@ -16,9 +16,7 @@
         "symfony/http-foundation": "~2.4",
         "symfony/config": "~2.4",
         "symfony/dependency-injection": "~2.4",
-        "pagerfanta/pagerfanta": "~1.0"
-    },
-    "suggest": {
+        "pagerfanta/pagerfanta": "~1.0",
         "jms/serializer": "^1.0.0"
     },
     "require-dev": {
