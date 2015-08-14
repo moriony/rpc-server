@@ -24,7 +24,7 @@ class MappedContainerHandlerProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideHanlersCountTestData
+     * @dataProvider provideHandlersCountTestData
      */
     public function testProvideHandlersCounts($config, $expectedCount)
     {
@@ -33,7 +33,7 @@ class MappedContainerHandlerProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertCount($expectedCount, $provider->provide());
     }
 
-    public function provideHanlersCountTestData()
+    public function provideHandlersCountTestData()
     {
         return [
             // Case 1
@@ -55,7 +55,6 @@ class MappedContainerHandlerProviderTest extends \PHPUnit_Framework_TestCase
                 ],
                 1
             ],
-
             // Case 3
             [
                 [
