@@ -25,7 +25,7 @@ abstract class AbstractRpcServer
     /** @var SerializerInterface */
     protected $serializer;
     /** @var HandlerInterface[] */
-    protected $handlers;
+    protected $handlers = [];
 
     /** @return RpcRequestInterface */
     abstract protected function createRequest(Request $request);
@@ -56,10 +56,7 @@ abstract class AbstractRpcServer
             $request = $this->createRequest($httpRequest);
             $this->eventDispatcher->dispatch(Events::EVENT_RPC_REQUEST, new RpcRequestEvent($request));
 
-            if (!array_key_exists($request->getMethod(), $this->handlers)) {
-                throw new InvalidMethodException(self::MESSAGE_METHOD_NOT_EXIST);
-            }
-            $responseData = $this->handlers[$request->getMethod()]->handle($request);
+            $responseData = $this->handle($request);
             $responseData = $this->prepareResponseData($request, $responseData);
             $this->eventDispatcher->dispatch(Events::EVENT_RPC_METHOD_CALL, new MethodCallEvent($request, $responseData));
         } catch (\Exception $exception) {
@@ -71,6 +68,14 @@ abstract class AbstractRpcServer
         $response = $this->createResponse($body);
         $this->eventDispatcher->dispatch(Events::EVENT_RPC_RESPONSE, new ResponseEvent($response));
         return $response;
+    }
+
+    public function handle(RpcRequestInterface $request)
+    {
+        if (!array_key_exists($request->getMethod(), $this->handlers)) {
+            throw new InvalidMethodException(self::MESSAGE_METHOD_NOT_EXIST);
+        }
+        return $this->handlers[$request->getMethod()]->handle($request);
     }
 
     public function addHandler($name, HandlerInterface $handler)
