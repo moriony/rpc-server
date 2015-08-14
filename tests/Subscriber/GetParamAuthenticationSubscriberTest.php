@@ -2,9 +2,7 @@
 
 namespace Moriony\RpcServer\ResponseSerializer;
 
-use Moriony\RpcServer\Event\ExceptionEvent;
 use Moriony\RpcServer\Event\HttpRequestEvent;
-use Moriony\RpcServer\Subscriber\ExceptionLoggerSubscriber;
 use Moriony\RpcServer\Subscriber\GetParamAuthenticationSubscriber;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;

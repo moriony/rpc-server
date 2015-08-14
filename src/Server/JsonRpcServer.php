@@ -14,7 +14,7 @@ class JsonRpcServer extends AbstractRpcServer implements RpcServerInterface
 
     protected function createRequest(Request $request)
     {
-        return new JsonRpcRequest($request, $this->config['extra_data']);
+        return new JsonRpcRequest($request);
     }
 
     protected function createResponse($data)
