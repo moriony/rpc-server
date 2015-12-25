@@ -3,6 +3,7 @@
 namespace Moriony\RpcServer\Protocol;
 
 use Exception;
+use Moriony\RpcServer\Exception\RpcException;
 use Moriony\RpcServer\Exception\RpcExceptionInterface;
 use Moriony\RpcServer\Request\JsonRpcRequest;
 use Moriony\RpcServer\Request\RpcRequestInterface;
@@ -56,22 +57,16 @@ class JsonRpcProtocol implements ProtocolInterface
      */
     public function createErrorResponse(\Exception $exception)
     {
-        if ($exception instanceof RpcExceptionInterface) {
-            $code = $exception->getCode();
-            $message = $exception->getMessage();
-            $data = $exception->getData();
-        } else {
-            $code = RpcExceptionInterface::ERROR_CODE_INTERNAL_ERROR;
-            $message = self::MESSAGE_UNEXPECTED_ERROR;
-            $data = null;
+        if (!$exception instanceof RpcExceptionInterface) {
+            $exception = new RpcException();
         }
 
         $body = $this->serializer->serialize([
             'jsonrpc' => '2.0',
             'error' => [
-                'code' => $code,
-                'message' => $message,
-                'data' => $data
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
+                'data' => $exception->getData()
             ],
             'id' => null
         ]);

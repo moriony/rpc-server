@@ -3,6 +3,7 @@
 namespace Moriony\RpcServer\Protocol;
 
 use Exception;
+use Moriony\RpcServer\Exception\RpcException;
 use Moriony\RpcServer\Exception\RpcExceptionInterface;
 use Moriony\RpcServer\Request\RpcRequestInterface;
 use Moriony\RpcServer\Request\XmlRpcRequest;
@@ -50,17 +51,12 @@ class XmlRpcProtocol implements ProtocolInterface
      */
     public function createErrorResponse(Exception $exception)
     {
-        if ($exception instanceof RpcExceptionInterface) {
-            $code = $exception->getCode();
-            $message = $exception->getMessage();
-        } else {
-            $code = RpcExceptionInterface::ERROR_CODE_INTERNAL_ERROR;
-            $message = self::MESSAGE_UNEXPECTED_ERROR;
+        if (!$exception instanceof RpcExceptionInterface) {
+            $exception = new RpcException();
         }
-
         $body = $this->serializer->serialize([
-            'faultCode' => $code,
-            'faultString' => $message,
+            'faultCode' => $exception->getCode(),
+            'faultString' => $exception->getMessage(),
         ]);
         return new XmlRpcResponse($body, 200, []);
     }
