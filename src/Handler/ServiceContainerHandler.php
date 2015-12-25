@@ -4,7 +4,7 @@ namespace Moriony\RpcServer\Handler;
 
 use Moriony\RpcServer\Exception\InvalidMethodException;
 use Moriony\RpcServer\Request\RpcRequestInterface;
-use Moriony\RpcServer\Server\AbstractRpcServer;
+use Moriony\RpcServer\Server\RpcServer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ServiceContainerHandler implements HandlerInterface
@@ -24,11 +24,11 @@ class ServiceContainerHandler implements HandlerInterface
     public function handle(RpcRequestInterface $request)
     {
         if (!$this->container->has($this->service)) {
-            throw new InvalidMethodException(AbstractRpcServer::MESSAGE_METHOD_NOT_EXIST);
+            throw new InvalidMethodException(RpcServer::MESSAGE_METHOD_NOT_EXIST);
         }
         $service = $this->container->get($this->service);
         if (!is_object($service) || !is_callable([$service, $this->method])) {
-            throw new InvalidMethodException(AbstractRpcServer::MESSAGE_METHOD_NOT_EXIST);
+            throw new InvalidMethodException(RpcServer::MESSAGE_METHOD_NOT_EXIST);
         }
         return call_user_func_array([$service, $this->method], [$request]);
     }
