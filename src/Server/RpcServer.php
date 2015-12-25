@@ -35,7 +35,7 @@ class RpcServer
         $this->protocol = $protocol;
     }
 
-    final public function getEventDispatcher()
+    public function getEventDispatcher()
     {
         if (!$this->eventDispatcher) {
             $this->eventDispatcher = new EventDispatcher();
@@ -52,7 +52,7 @@ class RpcServer
      * @param Request $httpRequest
      * @return Response
      */
-    final public function handleRequest(Request $httpRequest)
+    public function handleRequest(Request $httpRequest)
     {
         try {
             $this->eventDispatcher->dispatch(Events::EVENT_HTTP_REQUEST, new HttpRequestEvent($httpRequest));
