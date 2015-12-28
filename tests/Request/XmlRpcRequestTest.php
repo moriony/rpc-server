@@ -14,141 +14,64 @@ class XmlRpcRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Moriony\RpcServer\Request\RpcRequestInterface', $requestMock);
     }
 
-    public function testInvalidHttpMethodException()
+    public function testConstructor()
     {
-        $this->setExpectedException('Moriony\RpcServer\Exception\InvalidRequestException', 'Invalid HTTP method, method should be POST.', -32600);
-        new XmlRpcRequest(new Request());
-    }
+        $httpRequest = new Request();
+        $request = new XmlRpcRequest(
+            $httpRequest,
+            'test_method',
+            ['test_param' => 'test_param_value']
+        );
 
-    public function testInvalidContentTypeException()
-    {
-        $this->setExpectedException('Moriony\RpcServer\Exception\InvalidRequestException', 'Content-Type should be application/xml.', -32600);
-        $request = new Request();
-        $request->setMethod(Request::METHOD_POST);
-        new XmlRpcRequest($request);
-    }
-
-    public function testInvalidBodyException()
-    {
-        $this->setExpectedException('Moriony\RpcServer\Exception\RequestParseException', 'Invalid request body, should be valid xml.', -32700);
-        $request = new Request();
-        $request->setMethod(Request::METHOD_POST);
-        $request->headers->set('CONTENT_TYPE', 'application/xml');
-        new XmlRpcRequest($request);
-    }
-
-    public function testMethodRequiredException()
-    {
-        $this->setExpectedException('Moriony\RpcServer\Exception\InvalidRequestException', 'Invalid request body, should include method.', -32600);
-
-        $content = '<?xml version="1.0" encoding="UTF-8"?>
-        <methodCall>
-          <methodName></methodName>
-          <params></params>
-        </methodCall>
-        ';
-        $request = new Request(array(), array(), array(), array(), array(), array(), $content);
-        $request->setMethod(Request::METHOD_POST);
-        $request->headers->set('CONTENT_TYPE', 'application/xml');
-        new XmlRpcRequest($request);
-    }
-
-    public function testInvalidParamsTypeException()
-    {
-        $this->setExpectedException('Moriony\RpcServer\Exception\InvalidRequestException', 'Invalid request body, params should be an array or object.', -32600);
-        $content = '<?xml version="1.0" encoding="UTF-8"?>
-        <methodCall>
-          <methodName>test_method</methodName>
-        </methodCall>
-        ';
-        $request = new Request(array(), array(), array(), array(), array(), array(), $content);
-        $request->setMethod(Request::METHOD_POST);
-        $request->headers->set('CONTENT_TYPE', 'application/xml');
-        new XmlRpcRequest($request);
-    }
-
-    public function testGetHttpRequest()
-    {
-        $httpRequest = $this->createHttpRequest();
-        $request = new XmlRpcRequest($httpRequest);
         $this->assertSame($httpRequest, $request->getHttpRequest());
+        $this->assertSame('test_method', $request->getMethod());
+        $this->assertSame(['test_param' => 'test_param_value'], $request->getParams());
     }
 
     public function testGetExistsParam()
     {
-        $request = new XmlRpcRequest($this->createHttpRequest());
-        $this->assertSame('test_param', $request->get(0));
+        $request = new XmlRpcRequest(new Request(), '', ['test_param' => 'test_param_value']);
+        $this->assertSame('test_param_value', $request->get('test_param'));
     }
 
     public function testGetNotExistsParam()
     {
-        $request = new XmlRpcRequest($this->createHttpRequest());
+        $request = new XmlRpcRequest(new Request(), '', ['test_param' => 'test_param_value']);
         $this->assertSame(null, $request->get('not_exists_param'));
     }
 
-    public function testGetMethod()
-    {
-        $httpRequest = $this->createHttpRequest();
-        $request = new XmlRpcRequest($httpRequest);
-        $this->assertSame('test_method', $request->getMethod());
-    }
-
-    public function testSetMethod()
-    {
-        $request = new XmlRpcRequest($this->createHttpRequest());
-        $request->setMethod('new method');
-        $this->assertSame('new method', $request->getMethod());
-    }
-
-    public function testGetParams()
-    {
-        $request = new XmlRpcRequest($this->createHttpRequest());
-        $this->assertEquals([ 'test_param' ], $request->getParams());
-    }
 
     public function testGetNotExistsExtraData()
     {
-        $request = new XmlRpcRequest($this->createHttpRequest());
+        $request = new XmlRpcRequest(new Request(), '', []);
         $this->assertNull($request->getExtraData('test_extra'));
     }
 
     public function testGetExistsExtraData()
     {
-        $request = new XmlRpcRequest($this->createHttpRequest(), [
-            'test_extra' => 1
-        ]);
-        $this->assertSame(1, $request->getExtraData('test_extra'));
+        $request = new XmlRpcRequest(new Request(), '', []);
+        $request->setExtraData('test_extra', 'test_extra_value');
+        $this->assertSame('test_extra_value', $request->getExtraData('test_extra'));
     }
 
     public function testSetExistsExtraData()
     {
-        $request = new XmlRpcRequest($this->createHttpRequest(), [
-            'test_extra' => 1
-        ]);
-        $request->setExtraData('test_extra', 'new extra data');
-        $this->assertSame('new extra data', $request->getExtraData('test_extra'));
+        $request = new XmlRpcRequest(new Request(), '', []);
+        $request->setExtraData('test_extra', 'test_extra_value_1');
+        $request->setExtraData('test_extra', 'test_extra_value_2');
+        $this->assertSame('test_extra_value_2', $request->getExtraData('test_extra'));
     }
 
     public function testHasExistsExtraData()
     {
-        $request = new XmlRpcRequest($this->createHttpRequest(), [
-            'test_extra' => 1
-        ]);
+        $request = new XmlRpcRequest(new Request(), '', []);
+        $request->setExtraData('test_extra', 'test_extra_value');
         $this->assertTrue($request->hasExtraData('test_extra'));
     }
 
     public function testHasNotExistsExtraData()
     {
-        $request = new XmlRpcRequest($this->createHttpRequest());
+        $request = new XmlRpcRequest(new Request(), '', []);
         $this->assertFalse($request->hasExtraData('text_extra'));
-    }
-
-    protected function createHttpRequest()
-    {
-        $content = xmlrpc_encode_request('test_method', array('test_param'));
-        $request = new Request(array(), array(), array(), array(), array(), array(), $content);
-        $request->setMethod(Request::METHOD_POST);
-        $request->headers->set('CONTENT_TYPE', 'application/xml');
-        return $request;
     }
 }

@@ -180,11 +180,14 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
     public function createProtocolMock()
     {
         $mock = $this->getMockBuilder('Moriony\RpcServer\Protocol\ProtocolInterface')
-            ->setMethods(['createRequest', 'createResponse', 'createErrorResponse'])
+            ->setMethods(['createRequest', 'createResponse', 'createErrorResponse', 'getName'])
             ->getMock();
 
         $rpcRequest = $this->createRpcRequestMock();
         $rpcRequest->method('getMethod')->willReturn('test');
+
+        $mock->method('getName')
+            ->willReturn('test');
 
         $mock->method('createRequest')
             ->willReturn($rpcRequest);

@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 interface ProtocolInterface
 {
     /**
+     * @return string
+     */
+    public function getName();
+
+    /**
      * @param Request $request
      * @return RpcRequestInterface
      */
