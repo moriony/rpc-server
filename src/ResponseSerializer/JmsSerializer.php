@@ -7,6 +7,7 @@ use JMS\Serializer\SerializerInterface as JmsSerializerInterface;
 class JmsSerializer implements SerializerInterface
 {
     protected $serializer;
+    protected $format;
 
     public function __construct(JmsSerializerInterface $serializer, $format)
     {
