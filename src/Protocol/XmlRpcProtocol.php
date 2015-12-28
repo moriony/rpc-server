@@ -93,6 +93,4 @@ class XmlRpcProtocol implements ProtocolInterface
         ]);
         return new XmlRpcResponse($body, 200, []);
     }
-
-
 }
