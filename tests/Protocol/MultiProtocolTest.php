@@ -52,16 +52,16 @@ class MultiProtocolTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($protocol, end($protocols));
     }
 
-    public function testGetSupportedProtocolException()
+    public function testGetDetectedProtocolException()
     {
         $this->setExpectedException('Moriony\RpcServer\Exception\RequestParseException', 'Protocol not detected.');
-        $this->protocol->getSupportedProtocol();
+        $this->protocol->getDetectedProtocol();
     }
 
-    public function testGetSupportedProtocol()
+    public function testGetDetectedProtocol()
     {
         $this->protocol->createRequest(new Request());
-        $this->assertSame('valid', $this->protocol->getSupportedProtocol()->getName());
+        $this->assertSame('valid', $this->protocol->getDetectedProtocol()->getName());
     }
 
     public function testCreateRequest()

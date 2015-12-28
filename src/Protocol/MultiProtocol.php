@@ -80,7 +80,7 @@ class MultiProtocol implements ProtocolInterface
      * @return ProtocolInterface
      * @throws RequestParseException
      */
-    public function getSupportedProtocol()
+    public function getDetectedProtocol()
     {
         if (!$this->protocol) {
             throw new RequestParseException('Protocol not detected.');
@@ -124,7 +124,7 @@ class MultiProtocol implements ProtocolInterface
      */
     public function createResponse(RpcRequestInterface $request, $data)
     {
-        return $this->getSupportedProtocol()->createResponse($request, $data);
+        return $this->getDetectedProtocol()->createResponse($request, $data);
     }
 
     /**
@@ -133,6 +133,6 @@ class MultiProtocol implements ProtocolInterface
      */
     public function createErrorResponse(\Exception $exception)
     {
-        return $this->getSupportedProtocol()->createErrorResponse($exception);
+        return $this->getDetectedProtocol()->createErrorResponse($exception);
     }
 }
