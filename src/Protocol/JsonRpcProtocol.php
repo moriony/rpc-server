@@ -86,6 +86,10 @@ class JsonRpcProtocol implements ProtocolInterface
      */
     public function createResponse(RpcRequestInterface $request, $data)
     {
+        if ($data instanceof JsonRpcResponse) {
+            return $data;
+        }
+
         /** @var JsonRpcRequest $request */
         $body = $this->serializer->serialize([
             'jsonrpc' => '2.0',
