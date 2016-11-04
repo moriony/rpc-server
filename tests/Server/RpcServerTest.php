@@ -2,6 +2,13 @@
 
 namespace Moriony\RpcServer\ResponseSerializer;
 
+use Moriony\RpcServer\Event\ExceptionEvent;
+use Moriony\RpcServer\Event\HttpRequestEvent;
+use Moriony\RpcServer\Event\MethodCallEvent;
+use Moriony\RpcServer\Event\ResponseEvent;
+use Moriony\RpcServer\Event\RpcRequestEvent;
+use Moriony\RpcServer\Exception\HandlerNotFoundException;
+use Moriony\RpcServer\Exception\InvalidMethodException;
 use Moriony\RpcServer\Handler\HandlerInterface;
 use Moriony\RpcServer\HandlerProvider\HandlerProviderInterface;
 use Moriony\RpcServer\Protocol\ProtocolInterface;
@@ -46,7 +53,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetHandlerException()
     {
-        $this->setExpectedException('Moriony\RpcServer\Exception\HandlerNotFoundException');
+        $this->setExpectedException(HandlerNotFoundException::class);
         $this->server->getHandler('test');
     }
 
@@ -79,7 +86,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
     public function testHandleUndefinedMethod()
     {
-        $this->setExpectedException('Moriony\RpcServer\Exception\InvalidMethodException', 'Requested method does not exist.', -32601);
+        $this->setExpectedException(InvalidMethodException::class, 'Requested method does not exist.', -32601);
         $request = $this->createRpcRequestMock();
         $this->server->handle($request);
     }
@@ -88,7 +95,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
     {
         $dispatched = false;
         $this->server->getEventDispatcher()->addListener('rpc_server.http_request', function ($e) use(& $dispatched) {
-            $this->assertInstanceOf('Moriony\RpcServer\Event\HttpRequestEvent', $e);
+            $this->assertInstanceOf(HttpRequestEvent::class, $e);
             $dispatched = true;
         });
 
@@ -102,7 +109,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
     {
         $dispatched = false;
         $this->server->getEventDispatcher()->addListener('rpc_server.json_rpc_request', function ($e) use(& $dispatched) {
-            $this->assertInstanceOf('Moriony\RpcServer\Event\RpcRequestEvent', $e);
+            $this->assertInstanceOf(RpcRequestEvent::class, $e);
             $dispatched = true;
         });
 
@@ -114,13 +121,13 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
     public function testRpcMethodCallEvent()
     {
-        $handler = $this->createHandlerMock();
+        $handler = $this->createHandlerMock(['test', 'handle']);
         $handler->method('test');
         $this->server->addHandler('test', $handler);
 
         $dispatched = false;
         $this->server->getEventDispatcher()->addListener('rpc_server.method_call', function ($e) use(& $dispatched) {
-            $this->assertInstanceOf('Moriony\RpcServer\Event\MethodCallEvent', $e);
+            $this->assertInstanceOf(MethodCallEvent::class, $e);
             $dispatched = true;
         });
 
@@ -134,7 +141,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
     {
         $dispatched = false;
         $this->server->getEventDispatcher()->addListener('rpc_server.exception', function ($e) use (& $dispatched) {
-            $this->assertInstanceOf('Moriony\RpcServer\Event\ExceptionEvent', $e);
+            $this->assertInstanceOf(ExceptionEvent::class, $e);
             $dispatched = true;
         });
 
@@ -146,30 +153,29 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
 
     public function testRpcResponseEvent()
     {
-        $handler = $this->createHandlerMock();
+        $handler = $this->createHandlerMock(['test', 'handle']);
         $handler->method('test');
         $this->server->addHandler('test', $handler);
 
         $dispatched = false;
         $this->server->getEventDispatcher()->addListener('rpc_server.json_rpc_response', function ($e) use(& $dispatched) {
-            $this->assertInstanceOf('Moriony\RpcServer\Event\ResponseEvent', $e);
+            $this->assertInstanceOf(ResponseEvent::class, $e);
             $dispatched = true;
         });
 
         $response = $this->server->handleRequest(new Request());
-        $this->assertInstanceOf('Moriony\RpcServer\Response\JsonRpcResponse', $response);
+        $this->assertInstanceOf(JsonRpcResponse::class, $response);
         if (!$dispatched) {
             $this->fail('Event rpc_server.json_rpc_response must be dispatched.');
         }
     }
-//
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|HandlerInterface
      */
     public function createHandlerMock(array $methods = [])
     {
-        return $this->getMockBuilder('Moriony\RpcServer\Handler\HandlerInterface')
+        return $this->getMockBuilder(HandlerInterface::class)
             ->setMethods($methods)
             ->getMock();
     }
@@ -179,7 +185,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
      */
     public function createProtocolMock()
     {
-        $mock = $this->getMockBuilder('Moriony\RpcServer\Protocol\ProtocolInterface')
+        $mock = $this->getMockBuilder(ProtocolInterface::class)
             ->setMethods(['createRequest', 'createResponse', 'createErrorResponse', 'getName'])
             ->getMock();
 
@@ -206,7 +212,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
      */
     public function createHandlerProviderMock()
     {
-        return $this->getMockBuilder('Moriony\RpcServer\HandlerProvider\HandlerProviderInterface')
+        return $this->getMockBuilder(HandlerProviderInterface::class)
             ->setMethods(['provide'])
             ->getMock();
     }
@@ -216,7 +222,7 @@ class RpcServerTest extends \PHPUnit_Framework_TestCase
      */
     public function createRpcRequestMock(array $methods = [])
     {
-        return $this->getMockBuilder('Moriony\RpcServer\Request\JsonRpcRequest')
+        return $this->getMockBuilder(JsonRpcRequest::class)
             ->disableOriginalConstructor()
             ->setMethods($methods)
             ->getMock();
