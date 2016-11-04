@@ -13,7 +13,7 @@ install:
   - composer require symfony/http-foundation:${SYMFONY_VERSION}
   - composer require symfony/config:${SYMFONY_VERSION}
   - composer require symfony/dependency-injection:${SYMFONY_VERSION}
-  - composer install --dev --no-interaction --prefer-source
+  - composer install --no-interaction --prefer-source
 
 after_script:
   - php vendor/bin/coveralls
